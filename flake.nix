@@ -35,7 +35,7 @@
       };
 
       antigravity-wrapped = pkgs.writeShellScriptBin "antigravity-wrapped" ''
-              ${antigravity}/bin/antigravity --no-sandbox "$@"
+              ${antigravity}/bin/antigravity --verbose --no-sandbox "$@"
             '';
 
     in {
