@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    antigravity-src.url = "github:fdiblen/antigravity-nix";
+    antigravity-src.url = "github:jacopone/antigravity-nix";
     jail-nix.url = "github:MohrJonas/jail.nix";
   };
 
@@ -18,7 +18,7 @@
       jail = jail-nix.lib.init pkgs;
       cs = jail.combinators;
 
-      antigravity = antigravity-src.packages.${system}.default;
+      antigravity = antigravity-src.packages.${system}.google-antigravity-no-fhs;
       
       # Consolidated toolset for agents and CLI utilities
       agentEnv = pkgs.buildEnv {
@@ -50,6 +50,7 @@
         (cs.set-env "BROWSER" "browserchannel")
 
         # --- D-Bus Access ---
+        (cs.ro-bind "/run/dbus/system_bus_socket" "/run/dbus/system_bus_socket")
         (cs.dbus {
           talk = [ 
             "org.freedesktop.DBus" 
@@ -66,6 +67,7 @@
 
         # --- System/Profile Persistence ---
         (cs.ro-bind "/etc/profiles/per-user/cmdoret" "/etc/profiles/per-user/cmdoret")
+        (cs.rw-bind "/dev/shm" "/dev/shm") # Critical for rendering
 
         (cs.add-runtime ''
           mkdir -p ~/.config/Antigravity
