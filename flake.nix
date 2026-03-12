@@ -73,16 +73,19 @@
           mkdir -p ~/.gemini
         '')
 
+        # --- Antigravity Data Persistence ---
         (cs.rw-bind (cs.noescape "~/.config/Antigravity") (cs.noescape "~/.config/Antigravity"))
         (cs.rw-bind (cs.noescape "~/.antigravity") (cs.noescape "~/.antigravity"))
         (cs.rw-bind (cs.noescape "~/.gemini") (cs.noescape "~/.gemini"))
 
-        # --- Dynamic Arguments ---
+        # --- Bind mounts based on arguments ---
         (cs.add-runtime ''
           for arg in "$@"; do
             if [ -e "$arg" ]; then
               full_path=$(readlink -f "$arg")
               RUNTIME_ARGS+=(--bind "$full_path" "$full_path")
+              # Shadow .env and other sensitive files
+              RUNTIME_ARGS+=(--bind /dev/null "$full_path/.env")
             fi
           done
         '')
