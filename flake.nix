@@ -20,11 +20,6 @@
 
       antigravity = antigravity-src.packages.${system}.default;
       
-      # Determine browser at eval time (Requires --impure)
-      hostBrowser = let 
-        envBrowser = builtins.getEnv "BROWSER";
-      in if envBrowser != "" then envBrowser else "xdg-open";
-
       # Consolidated toolset for agents and CLI utilities
       agentEnv = pkgs.buildEnv {
         name = "antigravity-agent-tools";
@@ -49,7 +44,7 @@
         
         # --- URL Forwarding ---
         cs.open-urls-in-browser
-        (cs.set-env "BROWSER" hostBrowser)
+        (cs.set-env "BROWSER" "browserchannel")
 
         # --- D-Bus Access ---
         (cs.dbus {
@@ -97,6 +92,9 @@
       apps.${system}.default = {
         type = "app";
         program = "${self.packages.${system}.default}/bin/antigravity";
+        env = {
+          BROWSER = "firefox";
+        };
       };
     };
 }
