@@ -31,12 +31,15 @@
           gnugrep
           gnused
           nix
-          xdg-utils 
         ];
       };
 
+      antigravity-wrapped = pkgs.writeShellScriptBin "antigravity-wrapped" ''
+              ${antigravity}/bin/antigravity --no-sandbox "$@"
+            '';
+
     in {
-      packages.${system}.default = jail "antigravity" "${antigravity}/bin/antigravity" [
+      packages.${system}.default = jail "antigravity" "${antigravity-wrapped}/bin/antigravity-wrapped" [
         cs.gui
         cs.xwayland
         cs.gpu
@@ -57,7 +60,6 @@
         })
 
         # --- PATH/Tooling Fix ---
-        # Force the sandbox to use our custom toolset as the primary system bin
         (cs.bind-pkg "/app-tools" agentEnv)
         (cs.add-path "/app-tools/bin")
         (cs.set-env "SHELL" "/app-tools/bin/bash")
