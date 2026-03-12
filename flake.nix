@@ -50,7 +50,6 @@
         (cs.set-env "BROWSER" "browserchannel")
 
         # --- D-Bus Access ---
-        (cs.ro-bind "/run/dbus/system_bus_socket" "/run/dbus/system_bus_socket")
         (cs.dbus {
           talk = [ 
             "org.freedesktop.DBus" 
@@ -65,17 +64,12 @@
         (cs.add-path "/app-tools/bin")
         (cs.set-env "SHELL" "/app-tools/bin/bash")
 
-        # --- System/Profile Persistence ---
-        (cs.ro-bind "/etc/profiles/per-user/cmdoret" "/etc/profiles/per-user/cmdoret")
-        (cs.rw-bind "/dev/shm" "/dev/shm") # Critical for rendering
-
+        # --- Antigravity Data Persistence ---
         (cs.add-runtime ''
           mkdir -p ~/.config/Antigravity
           mkdir -p ~/.antigravity
           mkdir -p ~/.gemini
         '')
-
-        # --- Antigravity Data Persistence ---
         (cs.rw-bind (cs.noescape "~/.config/Antigravity") (cs.noescape "~/.config/Antigravity"))
         (cs.rw-bind (cs.noescape "~/.antigravity") (cs.noescape "~/.antigravity"))
         (cs.rw-bind (cs.noescape "~/.gemini") (cs.noescape "~/.gemini"))
