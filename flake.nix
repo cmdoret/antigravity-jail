@@ -25,12 +25,16 @@
         name = "antigravity-agent-tools";
         paths = with pkgs; [
           bashInteractive
-          git
           coreutils
           curl
+          direnv
+          git
           gnugrep
+          gnumake
           gnused
+          just
           nix
+          which
         ];
       };
 
@@ -60,9 +64,9 @@
         })
 
         # --- PATH/Tooling Fix ---
-        (cs.bind-pkg "/app-tools" agentEnv)
-        (cs.add-path "/app-tools/bin")
-        (cs.set-env "SHELL" "/app-tools/bin/bash")
+        (cs.bind-pkg "/usr" agentEnv)
+        (cs.add-path "/usr/bin")
+        (cs.set-env "SHELL" "/usr/bin/bash")
 
         # --- Antigravity Data Persistence ---
         (cs.add-runtime ''
