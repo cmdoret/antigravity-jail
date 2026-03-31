@@ -20,6 +20,21 @@ To use the flake directly, you may run:
 nix run github:cmdoret/antigravity-jail ~/my-project
 ```
 
+### Note
+On Ubuntu you might need to define an AppArmor policy to enable unprivileged user namespaces for bwrap.
+To do so e.g. add `/etc/apparmor.d/bwrap` 
+
+```sh
+abi <abi/4.0>,
+include <tunables/global>
+
+profile bwrap /nix/store/*/bin/bwrap flags=(unconfined) {
+  userns,
+
+  # Site-specific additions and overrides. See local/README for details.
+  include if exists <local/bwrap>
+}
+```
 
 ## Caveats
 
