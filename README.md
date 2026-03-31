@@ -17,7 +17,7 @@ The jail:
 To use the flake directly, you may run:
 
 ```sh
-nix run github.com:cmdoret/antigravity-jail ~/my-project
+nix run github:cmdoret/antigravity-jail ~/my-project
 ```
 
 
